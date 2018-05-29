@@ -1,7 +1,5 @@
-# Mega Case Study - Make a Hybrid Deep Learning Model
-
-
-
+# SOM ANN Case Study - Make a Hybrid Deep Learning Model
+# Building an Unsupervised DL Model (SOM), and Mixed with Supervised DL Model (ANN)
 # Part 1 - Identify the Frauds with the Self-Organizing Map
 
 # Importing the libraries
@@ -48,8 +46,6 @@ mappings = som.win_map(X)
 frauds = np.concatenate((mappings[(5,3)], mappings[(8,3)]), axis = 0)
 frauds = sc.inverse_transform(frauds)
 
-
-
 # Part 2 - Going from Unsupervised to Supervised Deep Learning
 
 # Creating the matrix of features
@@ -58,21 +54,19 @@ customers = dataset.iloc[:, 1:].values
 # Creating the dependent variable
 is_fraud = np.zeros(len(dataset))
 for i in range(len(dataset)):
-    if dataset.iloc[i,0] in frauds:
+    if dataset.iloc[i, 0] in frauds:
         is_fraud[i] = 1
-
+        
 # Feature Scaling
 from sklearn.preprocessing import StandardScaler
 sc = StandardScaler()
 customers = sc.fit_transform(customers)
 
-# Part 2 - Now let's make the ANN!
-
 # Importing the Keras libraries and packages
 from keras.models import Sequential
 from keras.layers import Dense
 
-# Initialising the ANN
+# Initializing the ANN
 classifier = Sequential()
 
 # Adding the input layer and the first hidden layer
@@ -84,7 +78,7 @@ classifier.add(Dense(units = 1, kernel_initializer = 'uniform', activation = 'si
 # Compiling the ANN
 classifier.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
 
-# Fitting the ANN to the Training set
+# Fitting the ANN to the training set
 classifier.fit(customers, is_fraud, batch_size = 1, epochs = 2)
 
 # Predicting the probabilities of frauds
